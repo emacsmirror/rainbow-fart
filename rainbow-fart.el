@@ -50,7 +50,7 @@ If it is nil, will play sound for every keywords."
   :safe #'numberp
   :group 'rainbow-fart)
 
-(defcustom rainbow-fart-time-interval (* 60 15)
+(defcustom rainbow-fart-time-interval nil
   "The time interval in seconds of rainbow-fart play voice for hours.
 If it's nil, the hours remind will not started."
   :type 'number
