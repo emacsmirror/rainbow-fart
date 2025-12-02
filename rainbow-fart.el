@@ -83,11 +83,11 @@ If it's nil, the hours remind will not started."
   :safe #'listp
   :group 'rainbow-fart)
 
-;;; TODO Support multiple voice packs data structure.
+;; TODO: Support multiple voice packs data structure.
 (defvar rainbow-fart-manifest-alist nil
   "An alist of model voice pack's manifest info.")
 
-;;; TODO Support multiple voice packs data structure.
+;; TODO: Support multiple voice packs data structure.
 (defcustom rainbow-fart-keyword-voices-alist '()
   "An alist of pairs of programming language keywords and voice filenames."
   :type 'alist
@@ -264,6 +264,7 @@ If it's nil, the hours remind will not started."
   ;; TODO write new audio file and keyword to contributions JSON file.
   )
 
+;;; minor mode
 
 ;;;###autoload
 (define-minor-mode rainbow-fart-mode
