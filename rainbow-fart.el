@@ -4,7 +4,7 @@
 ;; Package-Requires: ((emacs "25.1") (flycheck "32-cvs"))
 ;; Package-Version: 0.1
 ;; Keywords: tools
-;; homepage: https://repo.or.cz/emacs-rainbow-fart.git
+;; Homepage: https://repo.or.cz/emacs-rainbow-fart.git
 
 ;; rainbow-fart is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
