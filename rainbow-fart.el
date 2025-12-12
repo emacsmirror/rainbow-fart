@@ -98,7 +98,7 @@ If it's nil, the hours remind will not started."
 
 (defun rainbow-fart-voice-pack-find-json-files (voice-pack)
   "Find voice package manifest.json and contributes.json two files."
-  (let ((voice-model-dir (expand-file-name voice-pack rainbow-fart-voices-directory)))
+  (let* ((voice-model-dir (expand-file-name voice-pack rainbow-fart-voices-directory)))
     (if (file-exists-p (expand-file-name "contributes.json" voice-model-dir))
         (list
          (expand-file-name "manifest.json" voice-model-dir)
@@ -133,12 +133,12 @@ If it's nil, the hours remind will not started."
       ;; append to data structure
       (mapc
        (lambda (definition-alist)
-         (let ((keywords (mapcar #'identity (alist-get 'keywords definition-alist)))
-               (voices (mapcar #'identity (alist-get 'voices definition-alist)))
-               (texts (mapcar #'identity (alist-get 'texts definition-alist))))
+         (let* ((keywords (mapcar #'identity (alist-get 'keywords definition-alist)))
+                (voices (mapcar #'identity (alist-get 'voices definition-alist)))
+                (texts (mapcar #'identity (alist-get 'texts definition-alist))))
            (mapc
             (lambda (key-str)
-              (if-let ((keyword (string-trim key-str)))
+              (if-let* ((keyword (string-trim key-str)))
                   (add-to-list 'rainbow-fart-keyword-voices-alist (cons keyword voices) 'append)))
             keywords)))
        contributes))
@@ -152,13 +152,13 @@ If it's nil, the hours remind will not started."
 
 (defun rainbow-fart--get-media-uri (keyword)
   "Get media uri based on KEYWORD."
-  (when-let ((uris (cdr (assoc keyword rainbow-fart-keyword-voices-alist))))
-    (let ((uri (nth (random (length uris)) uris))
-          (voice-model-directory
-           (expand-file-name (alist-get 't rainbow-fart-voice-pack-alist) rainbow-fart-voices-directory)))
+  (when-let* ((uris (cdr (assoc keyword rainbow-fart-keyword-voices-alist))))
+    (let* ((uri (nth (random (length uris)) uris))
+           (voice-model-directory
+            (expand-file-name (alist-get 't rainbow-fart-voice-pack-alist) rainbow-fart-voices-directory)))
       (if (url-type (url-generic-parse-url uri))
           uri
-        (let ((uri (expand-file-name uri voice-model-directory)))
+        (let* ((uri (expand-file-name uri voice-model-directory)))
           (when (file-exists-p uri)
             uri))))))
 
@@ -170,11 +170,11 @@ If it's nil, the hours remind will not started."
                          (> (- (float-time) rainbow-fart--play-last-time)
                             rainbow-fart-keyword-interval)
                        (setq rainbow-fart--play-last-time (float-time))))))
-    (when-let ((uri (rainbow-fart--get-media-uri keyword))
-               (command (or
-                         (executable-find "mpg123")
-                         (executable-find "mplayer")
-                         (executable-find "mpv"))))
+    (when-let* ((uri (rainbow-fart--get-media-uri keyword))
+                (command (or
+                          (executable-find "mpg123")
+                          (executable-find "mplayer")
+                          (executable-find "mpv"))))
       (setq rainbow-fart--playing t)
       (make-process :name "rainbow-fart"
                     :command `(,command ,uri)
@@ -205,7 +205,7 @@ If it's nil, the hours remind will not started."
 
 (defun rainbow-fart--linter-display-error (err)
   "Play voice for `flycheck-error' ERR."
-  (let ((level (flycheck-error-level err)))
+  (let* ((level (flycheck-error-level err)))
     (rainbow-fart--play level)))
 
 (defun rainbow-fart--linter-display-errors (errors)
