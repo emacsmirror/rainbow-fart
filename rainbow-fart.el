@@ -269,7 +269,7 @@ If it's nil, the hours remind will not started."
 ;;;###autoload
 (define-minor-mode rainbow-fart-mode
   "A global minor mode add an encourager when you programming.
-Usage: (add-hook 'after-init-hook #'rainbow-fart-mode)"
+Usage: (add-hook \='after-init-hook #\='rainbow-fart-mode)"
   :init-value nil
   :lighter nil
   :group 'rainbow-fart
