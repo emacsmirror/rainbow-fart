@@ -189,13 +189,17 @@ If it's nil, the hours remind will not started."
   (when (looking-back regexp limit)
     (or (match-string-no-properties (or expression 0)) "")))
 
-(defcustom rainbow-fart-prefix-p
-  (lambda () (and rainbow-fart-mode ; (derived-mode-p 'prog-mode)
-             (not (memq major-mode rainbow-fart-ignore-modes))))
+(defcustom rainbow-fart-prefix-p 'rainbow-fart-prefix-predicate
   "A predict function to detect prefix for rainbow-fart."
   :type 'function
   :safe #'functionp
   :group 'rainbow-fart)
+
+(defun rainbow-fart-prefix-predicate ()
+  "A predicate function for prefix of rainbow-fart."
+  (and rainbow-fart-mode
+       ;; (derived-mode-p 'prog-mode)
+       (not (memq major-mode rainbow-fart-ignore-modes))))
 
 (defun rainbow-fart--post-self-insert ()
   "A hook function on `post-self-insert-hook' to play audio."
