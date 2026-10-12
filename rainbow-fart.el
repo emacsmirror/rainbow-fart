@@ -182,23 +182,30 @@ If it's nil, the hours remind will not started."
                     :sentinel (lambda (_ __)
                                 (setq rainbow-fart--playing nil)
                                 (setq rainbow-fart--play-last-time (float-time)))))))
+
 ;;; prefix detection
 
 (defun rainbow-fart-get-prefix (regexp &optional expression limit)
   (when (looking-back regexp limit)
     (or (match-string-no-properties (or expression 0)) "")))
 
+(defcustom rainbow-fart-prefix-p
+  (lambda () (and rainbow-fart-mode ; (derived-mode-p 'prog-mode)
+             (not (memq major-mode rainbow-fart-ignore-modes))))
+  "A predict function to detect prefix for rainbow-fart."
+  :type 'function
+  :safe #'functionp
+  :group 'rainbow-fart)
+
 (defun rainbow-fart--post-self-insert ()
   "A hook function on `post-self-insert-hook' to play audio."
-  (when (and (derived-mode-p 'prog-mode)
-             (not (memq major-mode rainbow-fart-ignore-modes)))
+  (when (funcall rainbow-fart-prefix-p)
     (let* ((prefix (save-excursion
                      ;; support prefix like "if(", "if (", "=>" etc keywords following punctuation.
                      (or (rainbow-fart-get-prefix "\\(?1:\\_<[^\\ ].\\_>\\)\\ ?[[:punct:]]?" 1)
                          (progn (goto-char (- (point) 1)) (thing-at-point 'symbol)))))
            (face (get-text-property (- (point) 1) 'face)))
-      (when (or (memq face '(font-lock-keyword-face))
-                (null face))
+      (when (or (memq face '(font-lock-keyword-face)) (null face))
         (rainbow-fart--play prefix)))))
 
 ;;; linter like `flycheck'
@@ -248,6 +255,8 @@ If it's nil, the hours remind will not started."
     (setq rainbow-fart--play-last-time (float-time))))
 
 (defvar rainbow-fart--timer nil)
+
+;;; Record voice for keyword.
 
 ;;;###autoload
 (defun rainbow-fart-record-voice-for-keyword ()
