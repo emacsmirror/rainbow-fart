@@ -65,7 +65,7 @@ If it's nil, the hours remind will not started."
   :safe #'stringp
   :group 'rainbow-fart)
 
-(defcustom rainbow-fart-ignore-modes nil
+(defcustom rainbow-fart-ignore-modes '()
   "A list of major modes which will enable rainbow-fart-mode."
   :type 'list
   :safe #'listp
@@ -191,8 +191,8 @@ If it's nil, the hours remind will not started."
 
 (defcustom rainbow-fart-prefix-p 'rainbow-fart-prefix-predicate
   "A predict function to detect prefix for rainbow-fart."
-  :type 'function
-  :safe #'functionp
+  :type 'symbol
+  :safe #'symbolp
   :group 'rainbow-fart)
 
 (defun rainbow-fart-prefix-predicate ()
